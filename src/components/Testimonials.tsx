@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { TestimonialCard } from "../data/data";
 
 const Testimonials = () => {
-  const viewportRef = useRef(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0);
