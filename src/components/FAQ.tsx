@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 const faqs = [
   {
     question: 'What is Ajo Moni?',
-    answer: 'Ajo Moni is a digital platform that lets you save money in trusted groups — just like traditional ajo, but more secure, transparent, and easy to manage from your phone.'
+    answer: 'Ajo Moni is a digital platform that lets you save money in trusted groups just like traditional ajo, but more secure, transparent, and easy to manage from your phone.'
   },
   {
     question: 'How does turn-by-turn savings work?',
@@ -45,7 +45,7 @@ const FAQSection = () => {
         <div className="container-fintech lg:w-[60%]">
           <div className="text-center lg:text-start mb-10 lg:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-950 mb-3">
-              Got Questions? <br></br>We've Got Answers
+              Got Questions? <br></br>We&apos;ve Got Answers
             </h2>
           </div>
 

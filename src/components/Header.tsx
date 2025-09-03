@@ -1,35 +1,7 @@
-// import Link from 'next/link'
-// import React from 'react'
-
-// const Header = () => {
-//   return (
-//       <header className='bg-[#EEF8E9] text-[#57B524] w-full px-8 py-4'>
-//         <div className='bg-background border border-b backdrop-blur-[2px] border-gray-300/50 px-3 md:px-7 lg:px-7 fixed w-full py-4 flex justify-between items-center top-0 z-99 '></div>
-//         <div className='flex items-center justify-between w-full max-w-[1250px] mx-auto px-2'>
-//             <h1 className='text-40 font-bold'>AJO MONI</h1>
-//             <ul className='flex gap-8'>
-//                 <li>Home</li>
-//                 <li>How it works</li>
-//                 <li>Features</li>
-//                 <li>Testimonials</li>
-//                 <li>FAQS</li>
-//             </ul>
-//             <button>
-//                 <Link href='/' className='flex gap-1'>
-//                     <span>Download the App</span>
-//                 </Link>
-//             </button>
-//         </div>
-//     </header>
-//   )
-// }
-
-// export default Header
 
 "use client";
 
 import { useState } from "react";
-// import { Button } from '@/components/ui/button';
 import { Menu, X } from "lucide-react";
 
 const Header = () => {

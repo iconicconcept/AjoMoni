@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { TestimonialCard } from "@/data/data";
+import { TestimonialCard } from "../data/data";
 
 const Testimonials = () => {
   const viewportRef = useRef(null);
