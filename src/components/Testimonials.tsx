@@ -1,33 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TestimonialCard } from "@/data/data";
 
 const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const viewportRef = useRef(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // ✅ responsive items per page
+  // Set responsive itemsPerPage and measure viewport width
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setItemsPerPage(1);
-      } else if (window.innerWidth < 1024) {
-        setItemsPerPage(2);
-      } else {
-        setItemsPerPage(3);
+      const w = window.innerWidth;
+      if (w < 640) setItemsPerPage(1); // mobile
+      else if (w < 1024) setItemsPerPage(2); // tablet
+      else setItemsPerPage(3); // desktop
+
+      if (viewportRef.current) {
+        setViewportWidth(viewportRef.current.clientWidth);
       }
     };
 
-    handleResize();
+    handleResize(); // initial
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ toggle logic
+  // clamp currentIndex whenever itemsPerPage changes
+  useEffect(() => {
+    setCurrentIndex((prev) =>
+      Math.min(prev, Math.max(0, TestimonialCard.length - itemsPerPage))
+    );
+  }, [itemsPerPage]);
+
+  // pixel-based sizing to avoid percent rounding issues that cause left alignment
+  const itemWidth = viewportWidth ? Math.floor(viewportWidth / itemsPerPage) : 0;
+  const trackWidth = itemWidth * TestimonialCard.length;
+
   const nextSlide = () => {
     setCurrentIndex((prev) =>
-      Math.min(prev + itemsPerPage, TestimonialCard.length - itemsPerPage)
+      Math.min(prev + itemsPerPage, Math.max(0, TestimonialCard.length - itemsPerPage))
     );
   };
 
@@ -39,41 +52,45 @@ const Testimonials = () => {
   const isEndDisabled = currentIndex >= TestimonialCard.length - itemsPerPage;
 
   return (
-    <div id="testimonials" className="py-11 mt-4 md:mt-6">
-      <div className="container mx-auto px-4">
+    <div id="testimonials" className="py-11 mt-4 md:mt-6 mb-2">
+      {/* <-- increased horizontal padding here as requested */}
+      <div className="container mx-auto px-6">
         <h2 className="text-center text-[16px] font-normal text-gray-950 mb-2">
           Testimonials
         </h2>
-        <h2 className="text-center sm:text-2xl lg:text-3xl font-bold text-gray-950 mb-8">
+        <h2 className="text-center text-2xl lg:text-3xl leading-tighter font-bold text-gray-950 mb-8">
           Proof in praise <br /> read our customers testimonials.
         </h2>
 
         <div className="relative">
-          {/* slider container */}
-          <div className="overflow-hidden">
+          {/* viewport — measured width */}
+          <div ref={viewportRef} className="overflow-hidden">
+            {/* track — explicit width in px; center when track is narrower than viewport */}
             <div
-              className="flex transition-transform duration-300 ease-in-out"
+              className="flex"
               style={{
-                transform: `translateX(-${
-                  currentIndex * (100 / itemsPerPage)
-                }%)`,
+                width: trackWidth ? `${trackWidth}px` : "100%",
+                transform: `translateX(-${currentIndex * itemWidth}px)`,
+                transition: "transform 300ms ease-in-out",
+                margin: trackWidth && trackWidth < viewportWidth ? "0 auto" : undefined,
               }}
             >
-              {TestimonialCard.map((card, index) => (
+              {TestimonialCard.map((card, idx) => (
                 <div
-                  key={index}
-                  className="flex flex-col justify-center items-center gap-3 px-1 py-1"
+                  key={idx}
+                  className="box-border flex flex-col justify-start items-start gap-6 px-4 py-4"
                   style={{
-                    flex: `0 0 ${100 / itemsPerPage}%`,
-                    maxWidth: `${100 / itemsPerPage}%`,
+                    width: itemWidth ? `${itemWidth}px` : undefined,
+                    flex: "0 0 auto",
+                    maxWidth: itemWidth ? `${itemWidth}px` : undefined,
                   }}
                 >
-                  {/* 👇 image stays normal size (no circle) */}
-                  <img src={card.src} alt={card.alt} className="" />
-                  <p className="text-[15px] font-normal text-center">
+                  {/* image kept as-is (not circular) and centered horizontally inside the card */}
+                  <img src={card.src} alt={card.alt} className="mx-auto" />
+                  <p className="text-[15px] font-normal text-center w-full">
                     {card.paragraph}
                   </p>
-                  <h3 className="text-[17px] font-bold text-center">
+                  <h3 className="text-[17px] font-bold text-center w-full">
                     {card.author}
                   </h3>
                 </div>

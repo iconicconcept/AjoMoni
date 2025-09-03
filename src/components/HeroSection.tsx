@@ -17,7 +17,7 @@ const HeroSection = () => {
                 <span className="text-fintech-primary">Nigerian</span> Way.{" "}
                 <span className="text-fintech-primary">Digitally.</span>
               </h1>
-              <p className="text-[17px] leading-5 text-gray-600 max-w-2xl">
+              <p className="text-[17px] leading-5 text-gray-600 max-w-2xl text-gray-950 font-bold md:font-normal">
                 Join trusted groups, contribute turn by turn, and reach your
                 financial goals easily, all from your phone.
               </p>
